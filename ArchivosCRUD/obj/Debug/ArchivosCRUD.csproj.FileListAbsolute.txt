@@ -1,0 +1,8 @@
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\bin\Debug\ArchivosCRUD.exe.config
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\bin\Debug\ArchivosCRUD.exe
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\bin\Debug\ArchivosCRUD.pdb
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\obj\Debug\ArchivosCRUD.csproj.AssemblyReference.cache
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\obj\Debug\ArchivosCRUD.csproj.SuggestedBindingRedirects.cache
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\obj\Debug\ArchivosCRUD.csproj.CoreCompileInputs.cache
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\obj\Debug\ArchivosCRUD.exe
+E:\Cursos\C#-UDEMY\ArchivosCRUD\ArchivosCRUD\obj\Debug\ArchivosCRUD.pdb
