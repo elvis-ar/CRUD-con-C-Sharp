@@ -31,33 +31,20 @@ namespace ArchivosCRUD
         //###### LEYENDO TODOS los libros
         internal static void LeerLibro()
         {
-            
             if (File.Exists("Libros.txt"))
             {
-                
-                StreamReader SR = File.OpenText("Libros.txt");
-                Libro LibroLeido = new Libro();
-                string linea;
-
-                do
+                //cargamos en una lista de libros todos los libros y posteriormente los leemos
+                List<Libro> libros = new List<Libro>();
+                cargarLibros(libros);
+                foreach(Libro libro in libros)
                 {
-                    linea = SR.ReadLine();
-                    if (linea != null && linea.Trim() != "")
-                    {
-                        LibroLeido.IdLibro = Convert.ToInt32(linea);
-                        LibroLeido.Nombre = SR.ReadLine().Trim();
-                        LibroLeido.Autor = SR.ReadLine().Trim();
-                        LibroLeido.AnioDePublicacion = Convert.ToInt32(SR.ReadLine().Trim());
-                        MostrarLibro(LibroLeido);
-                    }
-                } while (linea != null);
-
-                SR.Close();
+                    MostrarLibro(libro);
+                }
             }
             else
             {
                 Console.WriteLine("El archivos que intentas leer no existe.");
-                Console.WriteLine("ingresa daton en el archivo.");
+                Console.WriteLine("ingresa datos en el archivo.");
             }
 
         }
@@ -67,28 +54,19 @@ namespace ArchivosCRUD
         {
             if (File.Exists("Libros.txt"))
             {
-
-                StreamReader SR = File.OpenText("Libros.txt");
-                Libro LibroLeido = new Libro();
-                string linea;
                 bool libroEncontrado = false;
 
-                do
+                List<Libro> libros = new List<Libro>();
+                cargarLibros(libros);
+
+                foreach(Libro libro in libros)
                 {
-                    linea = SR.ReadLine();
-                    if (linea != null && linea.Trim() != "" && linea == idLibro.ToString())
+                    if (libro.IdLibro == idLibro)
                     {
-                        {
-                            LibroLeido.IdLibro = Convert.ToInt32(linea);
-                            LibroLeido.Nombre = SR.ReadLine().Trim();
-                            LibroLeido.Autor = SR.ReadLine().Trim();
-                            LibroLeido.AnioDePublicacion = Convert.ToInt32(SR.ReadLine().Trim());
-                            MostrarLibro(LibroLeido);
-                            libroEncontrado = true;
-                        }
+                        MostrarLibro(libro);
+                        libroEncontrado = true;
                     }
-                } while (linea != null);
-                SR.Close();
+                }
 
                 if(!libroEncontrado) Console.WriteLine("El libro con ID: {0} no existe", idLibro);
             }
@@ -172,7 +150,40 @@ namespace ArchivosCRUD
             Console.WriteLine("----------------------------------");
         }
 
-        //###### Metodo para agregar los libros
+
         
+         //###### Metodo para cargar libros
+        public static void cargarLibros(List<Libro> libros) 
+        {
+            //abrimos el fichero y creamos las variables para guardar el libro y la linea leida
+            StreamReader SR = File.OpenText("Libros.txt");
+            Libro libro;
+            string linea ;
+
+            //evaluamos que no sea null es decir fin del fichero ni que sea un salto de linea o linea vacia
+
+            do 
+            {
+                linea = SR.ReadLine();
+                if (linea != null && linea != "")
+                {
+                    // agregamos el id - nombre - autor - año de publicacion y agregamos el libro a la lista de libros 
+                    libro = new Libro();
+                    libro.IdLibro = Convert.ToInt32(linea);
+
+                    linea = SR.ReadLine().Trim();
+                    libro.Nombre = linea;
+
+                    linea = SR.ReadLine().Trim();
+                    libro.Autor = linea;
+
+                    linea = SR.ReadLine().Trim();
+                    libro.AnioDePublicacion = Convert.ToInt32(linea);
+
+                    libros.Add(libro);                    
+                }
+            } while (linea != null);
+            SR.Close();
+        }
     }
 }

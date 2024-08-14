@@ -100,6 +100,7 @@ namespace ArchivosCRUD
             }catch(Exception e)
             {
                 Console.WriteLine(">> ERROR:" + e.Message);
+                Console.WriteLine(e);
             }
         }
 
@@ -114,7 +115,7 @@ namespace ArchivosCRUD
 
         private static void EliminarLibro(List<Libro> libros)
         {
-            Console.WriteLine("eliminando libro");
+            Console.WriteLine("Eliminando......!!!");
         }
     }
 }
