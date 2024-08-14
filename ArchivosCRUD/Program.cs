@@ -59,7 +59,7 @@ namespace ArchivosCRUD
                     break;
                 case 2: LeerLibro();
                     break;
-                case 3: ActualizarLibro(libros);
+                case 3: ActualizarLibro();
                     break;
                 case 4: EliminarLibro(libros);
                     break;
@@ -104,13 +104,23 @@ namespace ArchivosCRUD
             }
         }
 
-        private static void ActualizarLibro(List<Libro> libros)
+        private static void ActualizarLibro()
         {
-            int idLibro;
-            Console.WriteLine("Ingrese el id del libro que desea actualizar: ");
-            idLibro = Convert.ToInt32(Console.ReadLine());
+            Libro libroActualizado = new Libro();
 
-            GestorDeDatos.ActualizarLibros(idLibro);
+            Console.WriteLine("Ingrese el id del libro que desea actualizar: ");
+            libroActualizado.IdLibro = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Ingrese su nommbre:");
+            libroActualizado.Nombre = Console.ReadLine();
+
+            Console.WriteLine("Ingrese el autor:");
+            libroActualizado.Autor = Console.ReadLine();
+
+            Console.WriteLine("Ingrese año de publicacion:");
+            libroActualizado.AnioDePublicacion = Convert.ToInt32(Console.ReadLine());
+
+            GestorDeDatos.ActualizarLibros(libroActualizado);
         }
 
         private static void EliminarLibro(List<Libro> libros)

@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -35,7 +36,7 @@ namespace ArchivosCRUD
             {
                 //cargamos en una lista de libros todos los libros y posteriormente los leemos
                 List<Libro> libros = new List<Libro>();
-                cargarLibros(libros);
+                CargarLibros(libros);
                 foreach(Libro libro in libros)
                 {
                     MostrarLibro(libro);
@@ -57,8 +58,9 @@ namespace ArchivosCRUD
                 bool libroEncontrado = false;
 
                 List<Libro> libros = new List<Libro>();
-                cargarLibros(libros);
+                CargarLibros(libros);
 
+                //cargamos los libros en la lista y luego los buscamos por su idLibros
                 foreach(Libro libro in libros)
                 {
                     if (libro.IdLibro == idLibro)
@@ -67,79 +69,43 @@ namespace ArchivosCRUD
                         libroEncontrado = true;
                     }
                 }
-
                 if(!libroEncontrado) Console.WriteLine("El libro con ID: {0} no existe", idLibro);
             }
             else
             {
                 Console.WriteLine("El archivos que intentas leer no existe.");
-                Console.WriteLine("ingresa daton en el archivo.");
+                Console.WriteLine("ingresa datos en el archivo.");
             }
         }
 
         //###### ACTUALIZANDO los libros
-        internal static void ActualizarLibros(int idLibro)
+        internal static void ActualizarLibros(Libro libroActualizado)
         {
             if (File.Exists("Libros.txt"))
             {
-
-                StreamReader SR = File.OpenText("Libros.txt");
                 List<Libro> libros = new List<Libro>();
-                Libro libroLeido;
-                string linea;
+                CargarLibros(libros);
 
-                do
+                //buscamos algun libro que coincida con el idLibro
+                Libro libroEncontrado = libros.FirstOrDefault(lb => lb.IdLibro == libroActualizado.IdLibro);
+                
+                if (libroEncontrado != null)
                 {
-                    libroLeido = new Libro();
-                    linea = SR.ReadLine();
-                    if (linea != null && linea.Trim() != "")
-                    {
-                        if(linea == idLibro.ToString())
-                        {
-                            libroLeido.IdLibro = Convert.ToInt32(linea);
-                            linea = SR.ReadLine();
-
-                            libroLeido.Nombre = Console.ReadLine();
-                            linea = SR.ReadLine();
-                            libroLeido.Autor = Console.ReadLine();
-                            linea = SR.ReadLine();
-                            libroLeido.AnioDePublicacion = Convert.ToInt32(Console.ReadLine());
-                            libros.Add(libroLeido);
-                        }
-                        else
-                        {
-                            libroLeido.IdLibro = Convert.ToInt32(linea);
-                            linea = SR.ReadLine();
-                            libroLeido.Nombre = linea;
-                            linea = SR.ReadLine();
-                            libroLeido.Autor = linea;
-                            linea = SR.ReadLine();
-                            libroLeido.AnioDePublicacion = Convert.ToInt32(linea);
-                            libros.Add(libroLeido);
-                        }                        
-                    }
-                } while(linea != null);
-                SR.Close();
-
-                StreamWriter SW = File.CreateText("Libros.txt");
-                foreach(Libro libro in libros){
-                    SW.WriteLine(libro.IdLibro);
-                    SW.WriteLine(libro.Nombre);
-                    SW.WriteLine(libro.Autor);
-                    SW.WriteLine(libro.AnioDePublicacion);
-                    SW.WriteLine(); 
+                    libroEncontrado.IdLibro = libroActualizado.IdLibro;
+                    libroEncontrado.Nombre = libroActualizado.Nombre;
+                    libroEncontrado.Autor = libroActualizado.Autor;
+                    libroEncontrado.AnioDePublicacion = libroActualizado.AnioDePublicacion;
+                    EscribirArchivo(libros);
                 }
-                SW.Close();
-
             }
             else
             {
                 Console.WriteLine("El archivos que intentas leer no existe.");
-                Console.WriteLine("ingresa daton en el archivo.");
+                Console.WriteLine("ingresa datos en el archivo.");
             }
         }
 
-        //###### Metodo para motrar los libros
+        //###### Metodo para motrar libro/s
         private static void MostrarLibro(Libro libroLeido)
         {
             Console.WriteLine("----------------------------------");
@@ -149,25 +115,19 @@ namespace ArchivosCRUD
             Console.WriteLine("Año de publicacion: " + libroLeido.AnioDePublicacion);
             Console.WriteLine("----------------------------------");
         }
-
-
         
-         //###### Metodo para cargar libros
-        public static void cargarLibros(List<Libro> libros) 
+         //###### Metodo para cargar los libros en una List de libros
+        public static void CargarLibros(List<Libro> libros) 
         {
             //abrimos el fichero y creamos las variables para guardar el libro y la linea leida
             StreamReader SR = File.OpenText("Libros.txt");
             Libro libro;
-            string linea ;
-
-            //evaluamos que no sea null es decir fin del fichero ni que sea un salto de linea o linea vacia
-
+            string linea;
             do 
             {
                 linea = SR.ReadLine();
                 if (linea != null && linea != "")
                 {
-                    // agregamos el id - nombre - autor - año de publicacion y agregamos el libro a la lista de libros 
                     libro = new Libro();
                     libro.IdLibro = Convert.ToInt32(linea);
 
@@ -183,7 +143,24 @@ namespace ArchivosCRUD
                     libros.Add(libro);                    
                 }
             } while (linea != null);
+            //evaluamos que no sea null es decir fin del fichero y dentro del if evaluamos que no sea un salto de linea o linea vacia
             SR.Close();
+        }
+
+        //escribe en el archivo todo desde la lista
+        private static void EscribirArchivo(List<Libro> libros)
+        {
+            StreamWriter SW = File.CreateText("Libros.txt");
+            
+            foreach(Libro libro in libros)
+            {
+                SW.WriteLine(libro.IdLibro);
+                SW.WriteLine(libro.Nombre);
+                SW.WriteLine(libro.Autor);
+                SW.WriteLine(libro.AnioDePublicacion);
+                SW.WriteLine("");
+            }
+            SW.Close();
         }
     }
 }
