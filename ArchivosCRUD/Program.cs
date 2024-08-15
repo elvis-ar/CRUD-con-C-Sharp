@@ -61,7 +61,7 @@ namespace ArchivosCRUD
                     break;
                 case 3: ActualizarLibro();
                     break;
-                case 4: EliminarLibro(libros);
+                case 4: EliminarLibro();
                     break;
             }
         }
@@ -123,9 +123,13 @@ namespace ArchivosCRUD
             GestorDeDatos.ActualizarLibros(libroActualizado);
         }
 
-        private static void EliminarLibro(List<Libro> libros)
+        private static void EliminarLibro()
         {
-            Console.WriteLine("Eliminando......!!!");
+            int idLibroDelete;
+            Console.WriteLine("Ingrese el id del libro a eliminar:");
+            idLibroDelete = Convert.ToInt32(Console.ReadLine());
+
+            GestorDeDatos.EliminarLIbro(idLibroDelete);
         }
     }
 }

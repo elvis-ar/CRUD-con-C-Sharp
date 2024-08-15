@@ -105,6 +105,31 @@ namespace ArchivosCRUD
             }
         }
 
+        internal static void EliminarLIbro(int idLibroDelete)
+        {
+            if (File.Exists("Libros.txt"))
+            {
+                List<Libro> libros = new List<Libro>();
+                CargarLibros(libros);
+
+                Libro libroEncontrado = libros.FirstOrDefault(lb => lb.IdLibro == idLibroDelete);
+                if (libroEncontrado != null)
+                {
+                    libros.Remove(libroEncontrado);
+                    EscribirArchivo(libros);
+                }
+                else
+                {
+                    Console.WriteLine("El libro a eliminar no fue encontrado");
+                }
+            }
+            else
+            {
+                Console.WriteLine("El archivos que intentas leer no existe.");
+                Console.WriteLine("ingresa datos en el archivo.");
+            }
+        }
+
         //###### Metodo para motrar libro/s
         private static void MostrarLibro(Libro libroLeido)
         {
